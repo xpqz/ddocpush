@@ -34,8 +34,8 @@ destdir/
 
 `usage: pushddoc.py https://account.cloudant.com/database sourcedir`
 
-Iterate over the json ddocs produced by mkddoc.py and upload those
-to the server under database.
+Iterate over the json ddocs produced by `mkddoc.py` and upload those
+to the server under `database`.
 
 Expects to find credentials in the following environment variables:
 
