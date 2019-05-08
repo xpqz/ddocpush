@@ -1,3 +1,27 @@
+"""
+usage: mkddoc.py sourcedir destdir
+
+Read through the sourcedir, and traverse a structure like
+
+sourcedir/
+    ddoc1/
+        view1/
+            map.js
+            reduce.js
+        view2/
+            map.js
+            reduce.js
+    ddoc2/
+        ...
+
+creating json documents under dstdir called
+
+destdir/
+    ddoc1-view1.json
+    ddoc1-view2.json
+    ...
+
+"""
 import argparse
 import json
 import os
