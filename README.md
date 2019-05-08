@@ -8,6 +8,7 @@ usage: mkddoc.py sourcedir destdir
 
 Read through the sourcedir, and traverse a structure like
 
+```text
 sourcedir/
     ddoc1/
         view1/
@@ -18,13 +19,16 @@ sourcedir/
             reduce.js
     ddoc2/
         ...
+```
 
 creating json documents under dstdir called
 
+```text
 destdir/
     ddoc1-view1.json
     ddoc1-view2.json
     ...
+```
 
 ## pushddoc.py
 
