@@ -4,7 +4,7 @@ Very basic tools for managing CouchDB design documents to enable proper versioni
 
 ## mkddoc.py
 
-usage: mkddoc.py sourcedir destdir
+`usage: mkddoc.py sourcedir destdir`
 
 Read through the sourcedir, and traverse a structure like
 
@@ -32,7 +32,7 @@ destdir/
 
 ## pushddoc.py
 
-usage: pushddoc.py https://account.cloudant.com/database sourcedir
+`usage: pushddoc.py https://account.cloudant.com/database sourcedir`
 
 Iterate over the json ddocs produced by mkddoc.py and upload those
 to the server under database.
