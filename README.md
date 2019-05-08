@@ -39,5 +39,7 @@ to the server under database.
 
 Expects to find credentials in the following environment variables:
 
+```text
 COUCHDB_USER
 COUCHDB_PW
+```
