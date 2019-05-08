@@ -6,7 +6,7 @@ Very basic tools for managing CouchDB design documents to enable proper versioni
 
 `usage: mkddoc.py sourcedir destdir`
 
-Read through the sourcedir, and traverse a structure like
+Read through the `sourcedir`, and expecting a structure like
 
 ```text
 sourcedir/
@@ -21,7 +21,7 @@ sourcedir/
         ...
 ```
 
-creating json documents under dstdir called
+creating json documents under `destdir`:
 
 ```text
 destdir/
