@@ -21,7 +21,7 @@ baseurl = baseurl.rstrip("/")
 try:
     user = os.environ['COUCHDB_USER']
     passw = os.environ['COUCHDB_PW']
-except IndexError:
+except KeyError:
     print(f"Expected creds in environment variables 'COUCHDB_USER' and 'COUCHDB_PW'")
     exit(1)
 
