@@ -1,0 +1,53 @@
+#!/usr/bin/env/python
+
+import os
+from pathlib import Path
+import sys
+
+import requests
+
+if len(sys.argv) != 3:
+    print(f"usage: {sys.argv[0]} https://acct.cloudant.com/database ddocdir")
+    exit(1)
+
+baseurl, ddocdir = sys.argv[1:]
+path = Path(ddocdir).resolve()
+if not path.exists():
+    print(f"Build dir '{path.name}' not found.")
+    exit(1)
+
+baseurl = baseurl.rstrip("/")
+
+try:
+    user = os.environ['COUCHDB_USER']
+    passw = os.environ['COUCHDB_PW']
+except IndexError:
+    print(f"Expected creds in environment variables 'COUCHDB_USER' and 'COUCHDB_PW'")
+    exit(1)
+
+session = requests.Session()
+session.auth = (user, passw)
+
+for filename in path.iterdir():
+    ddoc_name = filename.stem
+    ddoc_url = f"{baseurl}/_design/{ddoc_name}"
+
+    # Fetch existing
+    params = {}
+    existing_ddoc = session.get(ddoc_url)
+    if existing_ddoc.status_code == 200:
+        params["rev"] = existing_ddoc.json()["_rev"]
+
+    # Read new version and upload, specifying rev if we have one.
+    with open(filename, mode="r") as f:
+        data = f.read()
+
+    response = session.put(
+        ddoc_url,
+        data=data,
+        headers={"content-type": "application/json"},
+        params=params
+    )
+    response.raise_for_status()
+
+    print(f"Uploaded new version of {ddoc_url}")
