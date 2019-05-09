@@ -1,0 +1,72 @@
+#!/usr/binenv/python
+
+import json
+import os
+from pathlib import Path
+import sys
+
+
+def make_view(view_path):
+    """
+    For a given view, create its entry in the "views" section
+    of a design document.
+    """
+    map_path = view_path / "map.js"
+    reduce_path = view_path / "reduce.js"
+
+    try:
+        with open(map_path, mode="r") as f:
+            view = {view_path.name: {"map": f.read()}}
+    except FileNotFoundError:
+        print(f"No map.js found under {view_path.path}")
+        exit(1)
+
+    if reduce_path.exists():
+        with open(reduce_path, mode="r") as f:
+            view[view_path.name]["reduce"] = f.read()
+
+    return view
+
+def make_ddoc(ddoc_path):
+    """
+    Create a design doc from a set of views.
+    """
+    ddoc = {"views": {}, "language": "javascript"}
+    for view_path in ddoc_path.iterdir():
+        if view_path.is_dir():
+            ddoc["views"].update(make_view(view_path))
+
+    return ddoc
+
+def ddocs(src_path):
+    """
+    Iterate over all ddoc paths in the source directory and
+    assemble the design docs.
+    """
+    return {
+        ddoc_path.name: make_ddoc(ddoc_path)
+        for ddoc_path in src_path.iterdir()
+    }
+
+def generate_ddocs(ssrc, sdst):
+    """
+    Make all ddocs as defined under ssrc, and drop the corresponding
+    json under sdst.
+    """
+    src = Path(ssrc).resolve()
+    dst = Path(sdst).resolve()
+    if dst.exists():
+        print(f"Build dir '{dst.name}' already present; won't overwrite.")
+        exit(1)
+
+    os.makedirs(dst)
+    for ddoc_name, ddoc in ddocs(src).items():
+        with open(f"{dst}/{ddoc_name}.json", mode="w") as f:
+            f.write(json.dumps(ddoc))
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print(f"usage: {sys.argv[0]} src dest")
+        exit(1)
+
+    generate_ddocs(*sys.argv[1:])
