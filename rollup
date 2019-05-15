@@ -55,7 +55,7 @@ print(f"Created database {args.target}", file=sys.stderr)
 
 # Set off replications for each of the arg.databases to the target
 for db in args.databases:
-    result = session.post(
+    response = session.post(
         f"{baseurl}/_replicate",
         json={
             "source": f"https://{user}:{passw}@{base}/{db}",
