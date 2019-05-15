@@ -19,7 +19,9 @@ import os
 import requests
 import sys
 
-parser = argparse.ArgumentParser(description='Process some strings.')
+parser = argparse.ArgumentParser(
+    description='Roll up multiple databases into an aggregate.'
+)
 parser.add_argument('databases', metavar='N', type=str, nargs='+',
                     help='a database to roll up')
 parser.add_argument('--baseurl', type=str, required=True,
