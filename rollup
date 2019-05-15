@@ -20,15 +20,14 @@ import requests
 import sys
 
 parser = argparse.ArgumentParser(
-    description='Roll up multiple databases into an aggregate.'
+    description="Roll up multiple databases into an aggregate."
 )
-parser.add_argument('databases', metavar='N', type=str, nargs='+',
-                    help='a database to roll up')
-parser.add_argument('--baseurl', type=str, required=True,
-                    help='URL for the account')
-parser.add_argument('--target', type=str, required=True,
-                    help='target database name (will be created)')
-
+parser.add_argument("databases", metavar="N", type=str, nargs="+",
+                    help="a database to roll up")
+parser.add_argument("--baseurl", type=str, required=True,
+                    help="URL for the account")
+parser.add_argument("--target", type=str, required=True,
+                    help="target database name (will be created)")
 
 args = parser.parse_args()
 
@@ -40,8 +39,8 @@ if not baseurl.startswith("https://"):
 base = baseurl[len("https://"):]
 
 try:
-    user = os.environ['COUCHDB_USER']
-    passw = os.environ['COUCHDB_PW']
+    user = os.environ["COUCHDB_USER"]
+    passw = os.environ["COUCHDB_PW"]
 except KeyError:
     print(f"Expected creds in environment variables 'COUCHDB_USER' and 'COUCHDB_PW'")
     exit(1)
@@ -50,7 +49,7 @@ session = requests.Session()
 session.auth = (user, passw)
 
 # Create the target DB
-response = session.put(baseurl + "/" + args.target)
+response = session.put(f"{baseurl}/{args.target}")
 response.raise_for_status()
 
 print(f"Created database {args.target}", file=sys.stderr)
